@@ -66,10 +66,15 @@ export async function POST(req: Request) {
     if (flaskResponse.status !== 200) {
       return NextResponse.json({ message: "AI server error" }, { status: 501 });
     }
-
-    return NextResponse.json({ response: data }, { status: 200 });
+    const messages_output = await db.message.findMany({
+      where: { pdfId: pdfId },
+    });
+    return NextResponse.json(
+      { response: data, messages: messages_output },
+      { status: 200 }
+    );
   } catch (error) {
-    //console.error(error);
+    console.error(error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

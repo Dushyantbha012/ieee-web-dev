@@ -13,9 +13,9 @@ interface Chat {
   name: String;
   // Add any other fields you need from your Chat model
 }
-
-const SideBar = () => {
-  const [chats, setChats] = useState<Chat[]>([]); // Type the state as an array of Chat
+//const [chats, setChats] = useState<Chat[]>([]);
+const SideBar = ({ chats, setChats }: { chats: Chat[]; setChats: any }) => {
+  // Type the state as an array of Chat
   const userButtonAppearance = {
     elements: {
       userButtonAvatarBox: "w-20 h-20", // Custom width and height
@@ -37,7 +37,9 @@ const SideBar = () => {
     fetchChats();
   }, []); // Empty dependency array to run only on component mount
   const handleChatDeleted = (id: string) => {
-    setChats((prevChats) => prevChats.filter((chat) => chat.id !== id));
+    setChats((prevChats: any) =>
+      prevChats.filter((chat: any) => chat.id !== id)
+    );
   };
   return (
     <div className="p-2 flex flex-col h-screen ">

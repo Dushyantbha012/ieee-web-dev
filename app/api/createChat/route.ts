@@ -54,7 +54,15 @@ export async function POST(req: Request) {
         },
       },
     });
-    return NextResponse.json({ pdf }, { status: 201 });
+    const chats = await db.pDF.findMany({
+      where: { userId: userId },
+      select: {
+        id: true,
+        createdAt: true,
+        name: true,
+      },
+    });
+    return NextResponse.json(chats, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

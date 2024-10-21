@@ -20,7 +20,6 @@ export default function RootLayout({
         <body
           className={`${font.className} bg-[#030014] overflow-y-scroll overflow-x-hidden`}
         >
-          <CreateChatModal />
           <ShowCitations />
           {children}
         </body>

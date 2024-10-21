@@ -15,8 +15,19 @@ interface FormData {
   pdf: File | null;
   chatTitle: string;
 }
-
-const CreateChatModal = () => {
+interface Chat {
+  id: string; // Ensure this matches your schema
+  createdAt: Date;
+  name: String;
+  // Add any other fields you need from your Chat model
+}
+const CreateChatModal = ({
+  chats,
+  setChats,
+}: {
+  chats: Chat[];
+  setChats: any;
+}) => {
   const {
     register,
     handleSubmit,
@@ -55,9 +66,10 @@ const CreateChatModal = () => {
         name: data.chatTitle, // Using data from react-hook-form
       });
 
-      const newPdf = response.data;
+      setChats(response.data);
       toast.success("PDF uploaded and chat created!");
-      router.refresh();
+      //setChats(response.data.chats);
+      console.log("chats: ", response.data);
       reset(); // Reset the form after successful submission
       newChat.onClose();
     } catch (error) {
@@ -143,7 +155,6 @@ const CreateChatModal = () => {
         required
       />
     </div>
-
   );
 
   return (

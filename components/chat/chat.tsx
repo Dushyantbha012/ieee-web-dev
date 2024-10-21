@@ -4,20 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import useCitations from "@/hooks/useCitations";
 
-type Message = {
-  id: string;
-  content: string;
-  role: string;
-  createdAt: string;
-  citations: any[];
-};
-
-type Props = {
-  chatId: string;
-};
-
-function Chat({ chatId }: Props) {
-  const [messages, setMessages] = useState<Message[]>([]);
+function Chat({ chatId, messages, setMessages }: any) {
   const [fiveQues, setFiveQues] = useState<string[]>([]);
   const messageEndRef = useRef<null | HTMLDivElement>(null);
   const citation = useCitations();
@@ -28,7 +15,11 @@ function Chat({ chatId }: Props) {
       const response = await axios.get(`/api/messages/${pdfId}`);
       if (response.status === 200) {
         setMessages(response.data.messages);
-        setFiveQues(response.data.fiveQues.filter((item: string) => item && !item.startsWith("Answer:")));
+        setFiveQues(
+          response.data.fiveQues.filter(
+            (item: string) => item && !item.startsWith("Answer:")
+          )
+        );
       }
     } catch (error) {
       console.error("Error fetching messages and questions:", error);
@@ -81,11 +72,12 @@ function Chat({ chatId }: Props) {
             ))}
           </div>
           {messages.map(
-            (message) =>
+            (message: any) =>
               message.role !== "system" && (
                 <div
-                  className={`flex ${message.role === "user" ? "justify-end" : "justify-start"
-                    }`}
+                  className={`flex ${
+                    message.role === "user" ? "justify-end" : "justify-start"
+                  }`}
                   key={message.id}
                 >
                   {message.role === "user" && (
@@ -99,7 +91,9 @@ function Chat({ chatId }: Props) {
                       {message.citations && message.citations.length > 0 && (
                         <button
                           className="px-4 mt-4 py-2 bg-indigo-400 rounded-full"
-                          onClick={() => handleCitationsClick(message.citations)}
+                          onClick={() =>
+                            handleCitationsClick(message.citations)
+                          }
                         >
                           Citations
                         </button>

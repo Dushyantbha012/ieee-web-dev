@@ -4,11 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-type Props = {
-  pdfId: string;
-};
-
-const ChatInput = ({ pdfId }: Props) => {
+const ChatInput = ({ pdfId, messages, setMessages }: any) => {
   const { session } = useSession();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,10 +27,11 @@ const ChatInput = ({ pdfId }: Props) => {
         sender: "user",
       });
 
-      if (response.status === 201) {
-        console.log("Message created successfully:", response.data.newMessage);
+      if (response.status === 200) {
+        setMessages(response.data.messages);
+        console.log("messages: ", messages);
       } else {
-        console.error("Failed to create message:", response.data.message);
+        console.error("Failed to create message");
       }
     } catch (error) {
       console.error("Error creating message:", error);
